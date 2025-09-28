@@ -14,12 +14,12 @@ const __dirname = path.dirname(__filename);
 // All API tokens and client IDs are configured here
 const CONFIG = {
   // Discord Bot Configuration
-  DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN,
-  DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-  DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+  DISCORD_BOT_TOKEN: 'MTQyMTgxNTY0MTEyMzMyODAyMA.GNHvME.PdWIjFRfTfRjq8VmZsUTmULwJwTpRfi7K5SS8Y',
+  DISCORD_CLIENT_ID: '1421815641123328020',
+  DISCORD_CLIENT_SECRET: 'NwP3rlzKkZv08Pto9PMZe9wEJijUSBET',
   
   // Groq AI Configuration
-  GROQ_API_KEY: process.env.GROQ_API_KEY,
+  GROQ_API_KEY: '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',
   
   // Server Configuration
   PORT: process.env.PORT || 5000,
