@@ -1,0 +1,14 @@
+{
+  "name": "discord-ai-bot",
+  "version": "2.0.0",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "ejs": "^3.1.9",
+    "express": "^4.19.2",
+    "express-session": "^1.18.2",
+    "groq-sdk": "^0.3.0",
+    "node-fetch": "^3.3.2"
+  }
+}
