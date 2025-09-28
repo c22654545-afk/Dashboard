@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Discord AI Bot Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #1e293b; color: white; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .user-info { display: flex; align-items: center; gap: 1rem; }
+    .user-avatar { width: 40px; height: 40px; border-radius: 50%; }
+    .logout-btn { background-color: #ef4444; color: white; padding: 0.5rem 1rem; border: none; border-radius: 6px; text-decoration: none; }
+    .servers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; }
+    .server-card { background-color: #334155; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .server-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 1rem; color: #f1f5f9; }
+    .ai-status { margin-bottom: 1rem; color: #cbd5e1; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; color: #e2e8f0; }
+    .form-select, .form-input { width: 100%; padding: 0.5rem; border: 1px solid #475569; border-radius: 6px; background-color: #475569; color: white; }
+    .btn { padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; margin-right: 0.5rem; }
+    .btn-primary { background-color: #3b82f6; color: white; }
+    .btn-danger { background-color: #ef4444; color: white; }
+    .btn:hover { opacity: 0.9; }
+    .no-servers { text-align: center; color: #64748b; padding: 3rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🤖 Discord AI Bot Dashboard</h1>
+      <div class="user-info">
+        <% if (user.avatar) { %>
+          <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png" alt="Avatar" class="user-avatar">
+        <% } %>
+        <span>Welcome, <%= user.username %></span>
+        <a href="/logout" class="logout-btn">Logout</a>
+      </div>
+    </div>
+
+    <% if (servers.length === 0) { %>
+      <div class="no-servers">
+        <h2>No shared servers found</h2>
+        <p>Make sure the bot is invited to servers you have access to.</p>
+      </div>
+    <% } else { %>
+      <div class="servers-grid">
+        <% servers.forEach(server => { %>
+          <div class="server-card">
+            <h2 class="server-title"><%= server.name %></h2>
+            <div class="ai-status">
+              <strong>AI Channel:</strong> <%= server.aiChannel %>
+            </div>
+            
+            <form action="/setai" method="post">
+              <input type="hidden" name="csrf_token" value="<%= csrf_token %>">
+              <input type="hidden" name="guildId" value="<%= server.id %>">
+              
+              <div class="form-group">
+                <label for="channel_<%= server.id %>">Select AI Channel:</label>
+                <select name="channelId" id="channel_<%= server.id %>" class="form-select">
+                  <option value="">Choose a channel...</option>
+                  <% server.channels.forEach(channel => { %>
+                    <option value="<%= channel.id %>">#<%= channel.name %></option>
+                  <% }) %>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary">Set AI Channel</button>
+              </div>
+            </form>
+            
+            <form action="/removeai" method="post" style="display: inline;">
+              <input type="hidden" name="csrf_token" value="<%= csrf_token %>">
+              <input type="hidden" name="guildId" value="<%= server.id %>">
+              <button type="submit" class="btn btn-danger">Remove AI</button>
+            </form>
+            
+            <div class="commands-info" style="margin-top: 1rem; padding: 1rem; background-color: #1e293b; border-radius: 8px;">
+              <h4 style="margin-bottom: 0.5rem; color: #f1f5f9;">Available Commands:</h4>
+              <div style="color: #cbd5e1; font-size: 0.9rem;">
+                <div><strong>.aiset #channel</strong> - Set AI auto-response channel</div>
+                <div><strong>.ask &lt;question&gt;</strong> - Ask AI any question</div>
+                <div><strong>.help</strong> - Show help message</div>
+              </div>
+            </div>
+            
+            <div class="bot-info" style="margin-top: 1rem; padding: 1rem; background-color: #1e293b; border-radius: 8px;">
+              <h4 style="margin-bottom: 0.5rem; color: #f1f5f9;">Bot Features:</h4>
+              <div style="color: #cbd5e1; font-size: 0.9rem;">
+                <div>✅ Streaming AI responses</div>
+                <div>✅ Auto-reply in AI channels</div>
+                <div>✅ Command-based interactions</div>
+                <div>✅ Groq AI powered (gpt-oss-20b model)</div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>
